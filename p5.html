@@ -1,0 +1,1651 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MentCare</title>
+  <style>
+    :root {
+      --primary: #6a5acd;
+      --primary-dark: #5a4ab0;
+      --secondary: #a4d5eb;
+      --light-gray: #f5f5f5;
+      --white: #ffffff;
+      --text-dark: #333333;
+      --text-light: #666666;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI','Poppins', sans-serif;
+      background: #f0f8ff; /*Warna alice blue*/
+      margin: 0;
+      padding: 0;
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+    /*For Mentcare header*/
+    header {
+      background-color: var(--primary);
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-logos {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+    
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px; }
+
+    .header-logos img {
+      height: 60px;
+      width: auto;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2em;
+    }
+    
+    
+    /*Banner for peduli mental peduli masa depan*/
+    .banner {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 30px 15px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .banner h2 {
+  font-size: clamp(1.2rem, 4vw, 2em);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+    .banner p {
+      font-size: 1em;
+      margin-bottom: 15px;
+    }
+
+    .banner button {
+      padding: 12px 30px;
+      background-color: white;
+      color: var(--primary);
+      border: none;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1em;
+      transition: 0.3s;
+    }
+
+    .banner button:hover {
+      background-color: #f0f0ff;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .halamans {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+    }
+
+    .halaman-button {
+      padding: 12px 30px;
+      margin: 0 5px;
+      background-color: #e6e6fa;
+      border: none;
+      border-radius: 30px 30px 0 0;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .halaman-button.active {
+      background-color: #6a5acd;
+      color: white;
+    }
+
+    .halaman-content {
+      display: none;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .halaman-content.active {
+      display: block;
+    }
+    /* Chatbot */
+    .chatbot-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 350px;
+      z-index: 1000;
+    }
+    .chatbot-toggle {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 24px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: auto;
+    }
+
+    .chatbot-toggle:hover {
+      background-color: var(--primary-dark);
+    }
+
+    .chatbot-window {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      display: none;
+      flex-direction: column;
+      height: 400px;
+    }
+
+    .chatbot-header {
+      background-color: var(--primary);
+      color: white;
+      padding: 10px;
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chatbot-messages {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      text-align: left;
+    }
+
+    .message {
+      margin: 10px 0;
+      padding: 8px 12px;
+      border-radius: 18px;
+      max-width: 80%;
+    }
+
+    .bot-message {
+      background-color: #f0f0ff;
+      align-self: flex-start;
+    }
+
+    .user-message {
+      background-color: var(--primary);
+      color: white;
+      align-self: flex-end;
+      margin-left: auto;
+    }
+
+    .chatbot-input {
+      display: flex;
+      padding: 10px;
+      border-top: 1px solid #eee;
+    }
+
+    .chatbot-input input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 20px;
+      outline: none;
+    }
+
+    .chatbot-input button {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 15px;
+      margin-left: 5px;
+      cursor: pointer;
+    }
+
+    .chatbot-input button:hover {
+      background-color: var(--primary-dark);
+    }
+
+     /*edukasi kesehatan mental*/
+    .topics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin: 30px 0;
+    }
+
+    .topic-card {
+      background-color: white;
+      border-radius: 12px;
+      padding: 15px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: 0.3s;
+      text-align: center;
+      height: auto;
+      min-height: 180px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      overflow: hidden;
+       gap: 10px;
+    }
+
+    .topic-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255,255,255,0.8);
+      z-index: 1;
+    }
+
+    .topic-card > * {
+      position: relative;
+      z-index: 2;
+    }
+
+    .topic-card:hover {
+      background-color: #e6e6fa;
+      transform: translateY(-5px);
+    }
+
+    .topic-card img {
+      width: 75px;
+      height: 75px;
+      margin-bottom: 10px;
+       object-fit: contain;
+    }
+
+    .info-display {
+      background-color: white;
+      border-radius: 12px;
+      padding: 30px;
+      margin: 30px auto;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      max-width: 900px;
+    }
+
+    .info-content {
+      display: none;
+    }
+
+    .info-content.active {
+      display: block;
+      animation: fadeIn 0.5s;
+    }
+
+    .info-nav {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .info-nav button {
+      padding: 10px 20px;
+      background-color: #6a5acd;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+  
+    .info-nav button:hover {
+      background-color: #5a4ab0;
+    }
+
+    .info-nav button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    /*fitur menarik*/
+    .feature-content {
+      display: none;
+    }
+
+    .feature-content.active {
+      display: block;
+    }
+    
+
+    /* moodtracker Styles */
+    .moodtracker-options {
+     display: flex;
+     flex-wrap: wrap;
+     justify-content: center;
+     gap: 10px;
+     row-gap: 15px;
+     }
+    .moodtracker-option {
+     width: 37px; 
+}
+
+    .moodtracker-option {
+  cursor: pointer;
+  text-align: center;
+  padding: 15px;
+  border-radius: 8px;
+  transition: 0.3s;
+  width: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  word-wrap: break-word;
+}
+
+
+    .moodtracker-option:hover {
+      background-color: #f0f0ff;
+    }
+
+    .moodtracker-option img {
+      width: 50px;
+      height: 50px;
+    }
+
+    .moodtracker-option.selected {
+      background-color: #e6e6fa;
+      transform: scale(1.1);
+    }
+
+    #moodtracker-note {
+      width: 90%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      margin: 20px auto;
+      display: block;
+      font-family: inherit;
+    }
+
+    .moodtracker-history {
+      margin-top: 30px;
+      border-top: 1px solid #eee;
+      padding-top: 20px;
+    }
+
+    .history-toggle {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    /* kanvas perasaan Styles */
+    .kanvas-container {
+      margin: 30px 0;
+      position: relative;
+      text-align: center;
+    }
+
+    #moodtracker-kanvas {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: white;
+      max-width: 100%;
+    }
+    
+    @media (max-width: 600px) {
+  .moodtracker-options {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .moodtracker-option {
+    width: 60px !important;
+    margin: 5px;
+  }
+
+  .moodtracker-option img {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+    .kanvas-tools {
+      margin: 20px 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .kanvas-tools button {
+      padding: 8px 15px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    /* Stress release styles */
+    .stress-container {
+      text-align: center;
+    }
+
+    .stress-steps {
+      margin: 20px 0;
+    }
+
+    .stress-step {
+      display: none;
+    }
+
+    .stress-step.active {
+      display: block;
+      animation: fadeIn 0.5s;
+    }
+
+    .stress-nav {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .stress-nav button {
+      padding: 10px 20px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .stress-nav button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    /* Footer Styles */
+    footer {
+      font-size: 0.85rem;
+      margin-top: 80px;
+      background-color: var(--light-gray);
+      padding: 40px 20px;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 5px;
+    }
+
+    .footer-section h3 {
+      font-size: 1rem;
+      color: var(--primary);
+    }
+
+    .footer-section ul {
+      list-style: none;
+    }
+
+    .footer-section li {
+      margin-bottom: 5px;
+    }
+
+    .footer-section a {
+      color: var(--text-light);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-section a:hover {
+      color: var(--primary);
+    }
+
+    .copyright {
+      text-align: center;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #ddd;
+      color: var(--text-light);
+    }
+ 
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .header-container {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .topic-card {
+        height: 130px;
+        padding: 15px;
+      }
+      
+      .topic-card img {
+        width: 50px;
+        height: 50px;
+      }
+      
+      header {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      
+      .header-logos {
+        justify-content: center;
+      }
+      
+        
+    }
+  </style>
+</head>
+<body>
+  <header>
+  <div style="display: flex; align-items: center; gap: 10px;">
+    <img src="Logo-SMAGAPurwokerto.png" alt="Logo SMA Negeri 3" style="height: 50px;">
+    <img src="Logo-TechnoSmaga.png" alt="Logo I/O Festival" style="height: 50px;">
+    <span style="font-size: 2rem; font-weight: bold;">MentCare</span>
+  </div>
+</header>
+
+ <!-- Banner -->
+  <div class="banner">
+    <h2>Peduli Mental, Peduli Masa Depan</h2>
+    <p>Wadah Edukasi Dan Aksi Atas Urgensi Kesehatan Mental Remaja Indonesia</p>
+    <button onclick="showhalaman('education')">Mulai Jelajahi</button>
+  </div>
+ <!-- Halaman -->
+  <div class="halamans">
+    <button class="halaman-button active" onclick="showhalaman('education')">Edukasi Kesehatan Mental</button>
+    <button class="halaman-button" onclick="showhalaman('features')">Fitur Menarik</button>
+  </div>
+
+  <!-- Education halaman Content -->
+  <div class="halaman-content active" id="education-halaman">
+    <div class="topics-grid">
+      <div class="topic-card" onclick="showInfo(0)">
+        <img src="confused.gif" alt="Kesehatan Mental">
+        <div>Apa Itu Kesehatan Mental</div>
+      </div>
+      <div class="topic-card" onclick="showInfo(1)">
+        <img src="stress-management (1).gif" alt="Jenis Gangguan">
+        <div>Jenis Gangguan Mental</div>
+      </div>
+      <div class="topic-card" onclick="showInfo(2)">
+        <img src="insomnia.gif" alt="Gejala">
+        <div>Gejala Gangguan</div>
+      </div>
+      <div class="topic-card" onclick="showInfo(3)">
+        <img src="violence.gif" alt="Penyebab">
+        <div>Penyebab Gangguan</div>
+      </div>
+      <div class="topic-card" onclick="showInfo(4)">
+        <img src="running.gif" alt="Menjaga Mental">
+        <div>Cara Menjaga Mental</div>
+      </div>
+      <div class="topic-card" onclick="showInfo(5)">
+        <img src="doctors-office.gif" alt="Mengobati">
+        <div>Cara Mengobati Gangguan</div>
+      </div>
+      <div class="topic-card" onclick="showInfo(6)">
+        <img src="test.gif" alt="Tes Mental">
+        <div>Tes Kesehatan Mental Gratis</div>
+      </div>
+       <div class="topic-card" onclick="showInfo(7)">
+        <img src="living-together.gif" alt="konseling">
+        <div>Layanan Konseling Gratis</div>
+      </div>
+      <div class="topic-card" onclick="showInfo(8)">
+        <img src="database.gif" alt="Buku">
+        <div>Rekomendasi Buku</div>
+      </div>
+    </div>
+
+    <div class="info-display" id="education-info">
+    </div>
+  </div>
+
+  <!-- Features halaman Content -->
+  <div class="halaman-content" id="features-halaman">
+    <div class="topics-grid">
+      <div class="topic-card" onclick="showFeature('moodtracker-tracker')">
+        <img src="moods.gif" alt="suasana hati tracking">
+        <div>Pelacak Suasana Hati</div>
+      </div>
+      <div class="topic-card" onclick="showFeature('quotes')">
+        <img src="talk.gif" alt="Kutipan Inspiratif">
+        <div>Kutipan Inspiratif</div>
+      </div>
+      <div class="topic-card" onclick="showFeature('stress-release')">
+        <img src="meditation.gif" alt="Pelepas Stres">
+        <div>Pelepas Stres</div>
+      </div>
+      <div class="topic-card" onclick="showFeature('moodtracker-kanvas')">
+        <img src="sketch-book.gif" alt="Isi moodtracker Perasaan">
+        <div>Kanvas perasaan</div>
+      </div>
+    </div>
+
+    <div class="info-display" id="features-info">
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-section">
+        <h3>Tentang Kami</h3>
+        <ul>
+          <li><a href="tel:+6282138350712">Kontak</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Layanan</h3>
+        <ul>
+          <li><a href="#education-halaman">Edukasi</a></li>
+          <li><a href="#features-halaman">Fitur Bantuan</a></li>
+          <li><a href="#education-info" onclick="showInfo(7)">Konseling Gratis</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Sumber</h3>
+        <ul>
+          <li><a href="https://www.flaticon.com/" target="_blank">Animated</a></li>
+          <li><a href="https://pixabay.com/id/" target="_blank">Images 1</a></li>
+          <li><a href="https://www.freepik.com/" target="_blank">Images 2</a></li>
+        </ul>
+      </div>
+      </div>
+    </div>
+    <div class="copyright">
+      <p>&copy; 2025 MentCare - Peduli Mental, Peduli Masa Depan. Projek P5 Kelompok 3 Kelas XIF5 SMA Negeri 3 Purwokerto</p>
+    </div>
+  </footer>
+  <!-- Chatbot -->
+  <div class="chatbot-container">
+    <div class="chatbot-window" id="chatbot-window">
+      <div class="chatbot-header">
+        <h3>Teman Bicara</h3>
+        <button onclick="toggleChatbot()"
+          style="background: none; border: none; color: white; font-size: 20px;">×</button>
+      </div>
+      <div class="chatbot-messages" id="chatbot-messages">
+        <div class="message bot-message">Halo! Saya di sini untuk mendengarkan. Bagaimana perasaanmu hari ini?</div>
+      </div>
+      <div class="chatbot-input">
+        <input type="text" id="chatbot-input" placeholder="Ketik pesanmu..." onkeypress="handleChatbotInput(event)">
+        <button onclick="sendChatbotMessage()">Kirim</button>
+      </div>
+    </div>
+    <button class="chatbot-toggle" onclick="toggleChatbot()">
+      <img src="chatbot-unscreen.gif" alt="Chat" style="width: 60px; height: 60px;">
+    </button>
+
+
+  <script>
+    // edukasi
+    const topics = [
+      {
+     "title": "Apa Itu Kesehatan Mental?",
+     "content": [
+        `<p>Kesehatan mental adalah kondisi di mana individu memiliki kesejahteraan yang tampak dari dirinya, mampu menyadari potensinya sendiri, memiliki kemampuan untuk mengatasi tekanan hidup normal pada berbagai situasi dalam kehidupan, mampu bekerja secara produktif dan menghasilkan, serta memberikan kontribusi kepada komunitasnya.</p>`,
+        '<p><a href="https://www.biofarma.co.id/id/announcement/detail/pentingnya-kesehatan-mental-pada-remaja" target="_blank">Baca selengkapnya</a></p>'
+    ]
+      },
+      {
+        title: "Jenis Gangguan Mental",
+        content: [
+          `<p><strong>1. Gangguan Kecemasan:</strong> Rasa takut berlebihan terhadap situasi biasa (misalnya ujian), disertai gejala seperti gemetar, keringat dingin, dan serangan panik. Remaja cenderung menghindari pemicu, yang justru memperparah kecemasan. </p>`,
+          `<p><strong>2. Gangguan Depresi:</strong> Lebih dari sekadar sedih; meliputi perasaan putus asa, menarik diri dari lingkungan, dan hilangnya minat. Risiko bunuh diri meningkat jika tidak ditangani.</p>`,
+          `<p><strong>3. Obsessive-Compulsive Disorder (OCD):</strong> Dorongan untuk melakukan tindakan berulang (misalnya mencuci tangan terus-menerus) akibat pikiran obsesif, yang mengganggu aktivitas harian.</p>`,
+          `<p><strong>4. Gangguan Makan:</strong> Dipicu tekanan sosial/media, mencakup anoreksia dan bulimia. Penderita terobsesi dengan berat badan dan bentuk tubuh, mengorbankan kesehatan.</p>`,
+          `<p><strong>5. Attention Deficit Hyperactivity Disorder (ADHD):</strong> Kesulitan fokus, hiperaktif, dan impulsif. Mempengaruhi prestasi akademik dan hubungan sosial remaja.</p>`,
+          `<p><strong>6. Post-Traumatic Stress Disorder (PTSD):</strong> Akibat trauma seperti kekerasan atau bullying. Gejalanya termasuk kilas balik, mimpi buruk, dan stres berkepanjangan.</p>`,
+          `<p><strong>7. Sindrom Tourette:</strong> Gangguan neurologis berupa tic (gerakan atau ucapan berulang tak terkendali). Umumnya muncul antara usia 2–15 tahun.</p>`,
+          `<p><strong>8. Skizofrenia:</strong> Gangguan serius yang menyebabkan delusi dan halusinasi. Penderita kesulitan membedakan kenyataan, sering salah kaprah dianggap "kesurupan".</p>`,
+          `<p><strong>9. Gangguan Psikotik:</strong> Serupa skizofrenia, ditandai halusinasi, delusi, dan ucapan tidak teratur. Disebabkan oleh gangguan zat kimia otak dan stres berat.</p>`,
+          `<p><strong>10. Psikosomatis:</strong> Masalah psikologis memicu gejala fisik nyata (sakit kepala, nyeri, sesak), padahal tidak ada penyebab medis yang jelas.</p>`,
+          `<p><strong>11. Gangguan Factitious:</strong> Penderita pura-pura sakit atau melukai diri untuk mendapatkan perhatian medis atau simpati.</p>`,
+          `<p><strong>12. Gangguan Pengendalian Impuls:</strong> Tindakan impulsif dan agresif yang sulit dikendalikan, merugikan diri sendiri atau orang lain.</p>`,
+          `<p><strong>13. Gangguan Disosiatif:</strong> Perasaan terputus dari identitas diri atau kehilangan ingatan penting. Mengganggu fungsi sosial dan emosional.</p>`,
+          '<p><a href="https://www.chubb.com/id-id/articles/personal/jenis-gangguan-mental-remaja.html" target="_blank">Baca selengkapnya</a></p>'
+        ],
+      },
+      {
+        title: "Gejala Gangguan Mental",
+        content: [
+          `<p><strong>1. Mudah Lelah:</strong> Aktivitas yang dulunya terasa ringan kini cepat menguras energi, bahkan saat bekerja dalam waktu singkat.</p>`,
+          `<p><strong>2. Kurang Merawat Diri:</strong> Menurunnya motivasi menjaga kebersihan tubuh dan lingkungan, seperti tidak memotong kuku dan jarang mandi atau tidak merapikan ruangan.</p>`,
+          `<p><strong>3. Ketakutan Berlebih:</strong> Cemas, gugup, atau panik secara tidak wakanvas terhadap situasi kecil; butuh klarifikasi dari orang terdekat.</p>`,
+          `<p><strong>4. Perubahan Suasana Hati:</strong> Mudah merasa sedih, putus asa, apatis, dan bahkan muncul pikiran untuk mengakhiri hidup.</p>`,
+          `<p><strong>5. Mudah Lupa dan Sulit Fokus:</strong> Gangguan konsentrasi dan daya ingat, sehingga sulit berpikir jernih atau menyelesaikan masalah.</p>`,
+          `<p><strong>6. Gangguan Makan:</strong> Perubahan drastis pada nafsu makan: makan berlebihan, tidak nafsu makan, atau memuntahkan makanan.</p>`,
+          `<p><strong>7. Gangguan Tidur:</strong> Kesulitan tidur, tidur berlebihan, mimpi buruk, atau tidur tidak nyenyak sehingga tetap merasa lelah.</p>`,
+          `<p><strong>8. Menarik Diri dari Pergaulan:</strong> Enggan berinteraksi, merasa lelah bersosialisasi, dan menghindari komunikasi dengan orang lain.</p>`,
+          `<p><strong>9. Perilaku Destruktif:</strong> Cenderung menyakiti diri sendiri atau orang lain secara fisik atau verbal.</p>`,
+          `<p><strong>10. Penyalahgunaan Zat:</strong> Mengonsumsi alkohol, rokok, atau obat-obatan secara berlebihan sebagai bentuk pelarian.</p>`,
+          `<p><strong>11. Pikiran Menyakiti Diri atau Orang Lain:</strong> Munculnya dorongan untuk melukai diri atau orang lain, sering terkait depresi berat atau gangguan kepribadian.</p>`,
+          '<p><a href="https://www.klikdokter.com/psikologi/kesehatan-mental/ciri-ciri-gangguan-mental?srsltid=AfmBOoq5YLCWC3gGJX6oiPG718946tLSLUpw0OYximHN82ygZszp8UzD" target="_blank">Baca selengkapnya</a></p>'
+        ],
+      },
+     {
+  title: "penyebab gangguan mental",
+  content: [
+    `<div style="margin-left: 1em; text-transform: lowercase;">
+      <p><strong>1. faktor biologis (gangguan mental organik):</strong></p>
+      <ul style="list-style-type: none; padding-left: 1.5em;">
+        <li style="text-indent: -1em; padding-left: 1em;"> a. gangguan pada fungsi sel saraf di otak</li>
+        <li style="text-indent: -1em; padding-left: 1em;"> b. infeksi (misalnya akibat bakteri streptococcus)</li>
+        <li style="text-indent: -1em; padding-left: 1em;"> c. kelainan bawaan atau cedera pada otak</li>
+        <li style="text-indent: -1em; padding-left: 1em;"> d. kerusakan otak akibat terbentur atau kecelakaan</li>
+      </ul>
+    </div>`,
+    `<div style="margin-left: 1em; padding-left: 2.5em;">
+      <ul style="list-style-type: none;">
+        <li style="text-indent: -1em; padding-left: 1em;"> e. kekurangan oksigen pada otak bayi saat proses persalinan</li>
+        <li style="text-indent: -1em; padding-left: 1em;"> f. riwayat gangguan mental pada orang tua atau keluarga</li>
+        <li style="text-indent: -1em; padding-left: 1em;"> g. penyalahgunaan napza (heroin, kokain) dalam jangka panjang</li>
+        <li style="text-indent: -1em; padding-left: 1em;"> h. kekurangan nutrisi</li>
+      </ul>
+    </div>`,
+    `<div style="margin-left: 1em; text-transform: lowercase;">
+      <p><strong>2. faktor psikologis:</strong></p>
+      <ul style="list-style-type: none; padding-left: 1.5em;">
+        <li style="text-indent: -1em; padding-left: 1em;"> a. peristiwa traumatik (kekerasan, pelecehan seksual)</li>
+        <li style="text-indent: -1em; padding-left: 1em;"> b. kehilangan orang tua atau disia-siakan di masa kecil</li>
+        <li style="text-indent: -1em; padding-left: 1em;"> c. kurang mampu bergaul dengan orang lain</li>
+      </ul>
+    </div>`,
+    `<div style="margin-left: 1em; padding-left: 2.5em;">
+      <ul style="list-style-type: none;">
+        <li style="text-indent: -1em; padding-left: 1em;"> d. perceraian atau ditinggal mati oleh pasangan</li>
+        <li style="text-indent: -1em; padding-left: 1em;"> e. perasaan rendah diri, tidak mampu, marah, atau kesepian</li>
+      </ul>
+        <p style="margin-left: 1em;">
+        <a href="https://www.alodokter.com/kesehatan-mental" target="_blank" rel="noopener noreferrer">
+          Baca selengkapnya
+        </a>
+      </p>
+    </div>`
+    
+  ],
+},
+      {
+  title: "Cara Menjaga Kesehatan Mental",
+  content: [
+    `<div style="margin-left: 1em;">
+      <p><strong>10 Cara Efektif Menjaga Kesehatan Mental:</strong></p>
+      <ol style="padding-left: 1.5em;">
+        <li style="margin-bottom: 0.5em;"><strong>Pola Hidup Sehat</strong> - Konsumsi makanan bergizi dan rutin beraktivitas fisik</li>
+        <li style="margin-bottom: 0.5em;"><strong>Manajemen Stres</strong> - Kelola tekanan dengan teknik relaksasi atau meditasi</li>
+        <li style="margin-bottom: 0.5em;"><strong>Istirahat Cukup</strong> - Tidur 7-8 jam sehari untuk pemulihan mental</li>
+        <li style="margin-bottom: 0.5em;"><strong>Hubungan Sosial</strong> - Jaga komunikasi positif dengan keluarga/teman</li>
+        <li style="margin-bottom: 0.5em;"><strong>Me Time</strong> - Luangkan waktu untuk hobi dan self-care</li>
+      </ol>
+    </div>`,
+
+    `<div style="margin-left: 1em; margin-top: 1em;">
+      <ol start="6" style="padding-left: 1.5em;">
+        <li style="margin-bottom: 0.5em;"><strong>Self-Acceptance</strong> - Terima diri sendiri dan buat target realistis</li>
+        <li style="margin-bottom: 0.5em;"><strong>Bersyukur</strong> - Fokus pada hal-hal positif yang dimiliki</li>
+        <li style="margin-bottom: 0.5em;"><strong>Hindari Zat Berbahaya</strong> - Jauhi alkohol, rokok, dan narkoba</li>
+        <li style="margin-bottom: 0.5em;"><strong>Ekspresikan Perasaan</strong> - Ceritakan masalah ke orang terpercaya</li>
+        <li style="margin-bottom: 0.5em;"><strong>Minta Bantuan Profesional</strong> - Konsultasi psikolog ketika diperlukan</li>
+      </ol>
+      <p style="margin-top: 1em;">
+        <a href="https://ayosehat.kemkes.go.id/cara-menjaga-kesehatan-mental" 
+           target="_blank" 
+           rel="noopener noreferrer"
+           style="color: #0066cc; text-decoration: underline;">
+          Baca selengkapnya
+        </a>
+      </p>
+    </div>`
+  ],
+},
+      {
+        title: "Cara Mengobati Gangguan Mental",
+        content: [
+          `<p><strong>- Perubahan Gaya Hidup :</strong> Beberapa hal yang bisa dilakukan adalah mengurangi asupan gula dalam makanan, meningkatkan konsumsi buah dan sayur, rutin berolahraga, hindari kafein, berhenti merokok serta kelola stres dengan baik.</p>
+          <p><strong>- Membuka diri terhadap orang lain:</strong> Bicarakan secara terbuka, agar Anda merasa didengar, didukung dan tidak sendirian menghadapinya.</p>
+          <p><strong>- Bergabung dengan kelompok dukungan (support group):</strong> Carilah sebuah kelompok yang berisikan orang-orang yang dapat membantu Anda melakukan perubahan cara berpikir dan perilaku.</p>
+          <p><strong>- Mencari tenaga ahli profesional:</strong> seperti psikolog atau konselor, untuk membantu mengelola perasaan dan memperbaiki mental Anda.</p>`
+        ],
+
+      },
+{
+title: "Tes Kesehatan Mental Gratis",
+  content: [
+    `<p>Kamu bisa mencoba tes kesehatan mental online secara gratis di link berikut:</p>
+     <p id="test-link"><a href="https://www.halodoc.com/depression-test/quiz" target="_blank">Tes di Halodoc</a></p>
+     <p><a href="https://www.ibunda.id/tespsikologi/tes-kesehatan-mental-online" target="_blank">Tes di Ibunda</a></p>
+     <p><a href="https://hatiplong.com/tes-gratis/depresi" target="_blank">Tes di HatiPlong</a></p>
+     <p><a href="https://screening.mhanational.org/screening-tools/" target="_blank">Tes di MHA</a></p>`,
+    `<p>Penting untuk diingat bahwa pemeriksaan kesehatan mental daring bukanlah alat diagnostik dan tidak boleh menggantikan evaluasi menyeluruh oleh profesional kesehatan mental yang berkualifikasi. Akan tetapi, pemeriksaan ini dapat menjadi titik awal yang bermanfaat untuk memahami kesehatan mental Anda dan mengarahkan Anda ke dukungan dan sumber daya yang tepat.</p>`
+  ]
+},
+    {
+  title: "Layanan Konseling Online Gratis",
+  content: [
+    `<ul style="line-height:1.8;">
+      <li><strong>Berbagi Cerita </strong><br>
+        Layanan konseling online gratis yang menyediakan sejumlah psikolog berpengalaman untuk membantu meningkatkan kesehatan mental. – <a href="https://www.instagram.com/berbagicerita.id?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">Kunjungi</a></li>
+      <li><strong>Reparasi Jiwa</strong><br>
+       Space that will inspire you to be the best version of yourself and help you expand your knowledge! – <a href="https://www.instagram.com/reparasi.jiwa?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">Kunjungi</a></li>
+      <li><strong>Bina Diri Psikologi</strong><br>
+       Layanan psikologi untuk pertumbuhan pribadi dan pengembangan diri. – <a href="https://www.instagram.com/bina.diri_psikologi?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">Kunjungi</a></li>
+    </ul>
+    <p><strong>Semua layanan di atas bisa diakses tanpa biaya. Jangan ragu untuk meminta bantuan 💜</strong></p>`
+  ]
+},
+{
+  title: "Rekomendasi Buku",
+  content: [
+    `<div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:20px;">
+      <div style="text-align:center;">
+        <img src="9786230026287_Cover_Psychological_Tests_For_Teens_Check_Your_Mental.jpg" style="width:100px;"><br>
+        <strong>Check Your Mental Health </strong><br>
+        <small>Nurul Chomaria, S. Psi</small><br>
+        <a href="https://ebooks.gramedia.com/id/buku/psych-4" target="_blank">Lihat Buku</a>
+      </div>
+      <div style="text-align:center;">
+        <img src="BLK_TBKTSOPDTDPT1716792912517.jpg" style="width:100px;"><br>
+        <strong>THE BODY KEEPS THE SCORE </strong><br>
+        <small>Bessel van der Kolk</small><br>
+        <a href="https://ebooks.gramedia.com/id/buku/the-body-keeps-the-score-otak-pikiran-dan-tubuh-dalam-pemulihan-trauma" target="_blank">Lihat Buku</a>
+      </div>
+      <div style="text-align:center;">
+        <img src="ID_HCO2015MTH12TBJA.jpeg" style="width:100px;"><br>
+        <strong>The Bell Jar</strong><br>
+        <small>Sylvia Plath</small><br>
+        <a href="https://ebooks.gramedia.com/id/buku/the-bell-jar" target="_blank">Lihat Buku</a>
+      </div>
+      <div style="text-align:center;">
+        <img src="rusak.png" style="width:100px;"><br>
+        <strong>Rusak Saja Buku Ini</strong><br>
+        <small>Sony Adams</small><br>
+        <a href="https://www.gramedia.com/products/rusak-saja-buku-ini?srsltid=AfmBOoqsiNHAa9K_Il63JPQ6TnBuULhUQmVNlqZOCpHbGoyNQInKEtzsr" target="_blank">Lihat Buku</a>
+      </div>
+      <div style="text-align:center;">
+        <img src="9789797809676.jpg" style="width:100px;"><br>
+        <strong>Jika Kita Tak Pernah Baik-Baik Saja</strong><br>
+        <small>Alvi Syahrin</small><br>
+        <a href="https://www.gramedia.com/products/jika-kita-tak-pernah-baik-baik-saja?srsltid=AfmBOorXFjysJ9NnL-uG1mijCm0TsYOk1aqHB_hhfWXeLq7KIFd_wYd2" target="_blank">Lihat Buku</a>
+      </div>
+      <div style="text-align:center;">
+        <img src="haemin.jpg" style="width:100px;"><br>
+        <strong>The Things You Can See Only When You Slow Down</strong><br>
+        <small>Haemin Sunim</small><br>
+        <a href="https://www.gramedia.com/products/the-things-you-can-see-only-when-you-slow-down?utm_source=blog&utm_medium=ContentMarketing&utm_campaign=RekomendasiBukuSerasaDipelukTheThingsYouCanSeeOnlyWhenYouSlowDown" target="_blank">Lihat Buku</a>
+      </div>
+      <div style="text-align:center;">
+        <img src="astrid.jpg" style="width:100px;"><br>
+        <strong> A Handbook for Self-Love</strong><br>
+        <small>Astrid Savitri</small><br>
+        <a href="https://www.gramedia.com/products/a-handbook-for-self-love?srsltid=AfmBOopelrn8PJyTXvhIEGCAY4YyoRjXPJCnBPO4QET905AFjLCesP81" target="_blank">Lihat Buku</a>
+      </div>
+      <div style="text-align:center;">
+        <img src="goodbadhabits.jpg" style="width:100px;"><br>
+        <strong>Good Habits, Bad Habits</strong><br>
+        <small>Wendy Wood</small><br>
+        <a href="https://ebooks.gramedia.com/id/buku/good-habits-bad-habits-cara-membentuk-kebiasaan-baik-untuk-menghasilkan-perubahan-positif" target="_blank">Lihat Buku</a>
+      </div>
+    </div>`
+  ]
+},
+    ];
+
+    // Features data
+    const features = {
+      'moodtracker-tracker': {
+        title: "Pelacak Suasana Hati",
+        content: `
+          <div id="moodtracker-tracker-content">
+            <p>Bagaimana perasaanmu hari ini?</p>
+            <div class="moodtracker-options">
+              <div class="moodtracker-option" onclick="selectmoodtracker('sangat-bahagia', 'Sangat Bahagia')">
+                <img src="me-removebg-preview.png" alt="Sangat Bahagia">
+                <div>Sangat Bahagia</div>
+              </div>
+              <div class="moodtracker-option" onclick="selectmoodtracker('bahagia', 'Bahagia')">
+                <img src="4ffc1ae8-d829-46ff-9335-7b1171bc8a66-removebg-preview.png" alt="Bahagia">
+                <div>Bahagia</div>
+              </div>
+              <div class="moodtracker-option" onclick="selectmoodtracker('netral', 'Netral')">
+                <img src="52c8d000-2b9c-4bca-8d78-3f2199e53644-removebg-preview.png" alt="Netral">
+                <div>Netral</div>
+              </div>
+              <div class="moodtracker-option" onclick="selectmoodtracker('sedih', 'Sedih')">
+                <img src="Pink_Emoji_Reaction-removebg-preview.png" alt="Sedih">
+                <div>Sedih</div>
+              </div>
+              <div class="moodtracker-option" onclick="selectmoodtracker('sangat-sedih', 'Sangat Sedih')">
+                <img src="638daa54-cf09-4b59-84d9-c3105c7a7b3c-removebg-preview.png" alt="Sangat Sedih">
+                <div>Sangat Sedih</div>
+              </div>
+            </div>
+            <textarea id="moodtracker-note" placeholder="Tambahkan catatan (opsional)" rows="2"></textarea>
+            <button onclick="savemoodtracker()" style="margin-top: 5px; padding: 8px 15px;">Simpan Suasana Hati</button>
+            <button class="history-toggle" onclick="toggleHistory()">Lihat Riwayat</button>
+            <div class="moodtracker-history" id="moodtracker-history" style="display: none; margin-top: 15px;">
+              <h3>Riwayat Suasana Hati</h3>
+              <div id="moodtracker-entries"></div>
+            </div>
+          </div>
+        `
+      },
+      'quotes': {
+        title: "Kutipan Inspiratif",
+        content: `
+          <div id="quotes-content">
+            <div class="quote-container">
+              <p id="current-quote">"Kesehatan mental bukan tujuan, tapi sebuah proses. Ini tentang bagaimana Anda mengemudi, bukan ke mana Anda pergi."</p>
+              <p id="quote-author">- Noam Shpancer</p>
+            </div>
+            <button onclick="getNewQuote()" style="margin-top: 10px; padding: 8px 15px;">Kutipan Baru</button>
+          </div>
+        `
+      },
+      'stress-release': {
+        title: "Pelepas Stres",
+        content: `
+          <div class="stress-container">
+            <h2>Pelepas Stres</h2>
+            <p>Ikuti langkah-langkah sederhana ini untuk mengurangi stres:</p>
+            
+            <div class="stress-steps">
+              <div class="stress-step active" id="step1">
+                <h3>Langkah 1: Tarik Napas Dalam</h3>
+                <p>Tarik napas perlahan melalui hidung selama 4 hitungan</p>
+                <img src="woman-6022486_1280.jpg" alt="Tarik Napas" style="width: 200px; margin: 15px auto; display: block;">
+                <a href="https://pixabay.com/id/">Designed by Pixabay</a>
+                </div>
+              
+              <div class="stress-step" id="step2">
+                <h3>Langkah 2: Tahan Napas</h3>
+                <p>Tahan napas selama 4 hitungan</p>
+                <img src="person-1281607_1280.jpg" alt="Tahan Napas" style="width: 200px; margin: 15px auto; display: block;">
+                <a href="https://pixabay.com/id/">Designed by Pixabay</a>
+                </div>
+              
+              <div class="stress-step" id="step3">
+                <h3>Langkah 3: Buang Napas</h3>
+                <p>Buang napas perlahan melalui mulut selama 4 hitungan</p>
+                <img src="woman-7597270_1280 (1).jpg" alt="Buang Napas" style="width: 200px; margin: 15px auto; display: block;">
+              <a href="https://pixabay.com/id/">Designed by Pixabay</a>
+                </div>
+              
+              <div class="stress-step" id="step4">
+                <h3>Langkah 4: Peluk Diri Sendiri</h3>
+                <p>Silangkan tangan dan beri diri Anda pelukan yang menenangkan</p>
+                <img src="warmth-tenderness-cute-korean-girl-hugs-herself-embrace-equite-femenism-international-womens.jpg" alt="Peluk Diri" style="width: 200px; margin: 15px auto; display: block;">
+                 <a href="http://www.freepik.com">Designed by Freepik</a>
+                </div>
+              
+              <div class="stress-step" id="step5">
+                <h3>Langkah 5: Ucapkan Terima Kasih</h3>
+                <p>Katakan "Terima kasih" pada diri sendiri untuk semua yang telah Anda lalui</p>
+                <img src="4590471.jpg" alt="Ucapkan Terima Kasih" style="width: 200px; margin: 15px auto; display: block;">
+                 <a href="http://www.freepik.com">Designed by Freepik</a>
+                </div>
+            </div>
+            
+            <div class="stress-nav">
+              <button onclick="prevStep()" id="prev-btn" disabled>Sebelumnya</button>
+              <button onclick="nextStep()" id="next-btn">Selanjutnya</button>
+            </div>
+          </div>
+        `
+      },
+      'moodtracker-kanvas': {
+        title: "moodtracker Perasaan",
+        content: `
+          <div id="moodtracker-kanvas-content">
+            <p>Isilah moodtracker dengan coretan atau apapun yang mewakili perasaanmu hari ini.<br>
+            Ekspresikanlah emosi dan hal hal yang sulit diungkapkan dengan kata-kata.<br>
+            Setiap goresan, warna, dan komposisi dalam moodtracker memiliki arti dan makna yang berkaitan dengan perasaanmu.</p>
+            
+            <div class="kanvas-container">
+              <canvas id="moodtracker-kanvas" width="500" height="500"></canvas>
+            </div>
+            
+            <div class="kanvas-tools">
+              <button onclick="changekanvasColor('#000000')" style="background-color: #000000;">Hitam</button>
+              <button onclick="changekanvasColor('#FF0000')" style="background-color: #FF0000;">Merah</button>
+              <button onclick="changekanvasColor('#de8ab8')" style="background-color: #de8ab8;">Pink</button>
+              <button onclick="changekanvasColor('#0000FF')" style="background-color: #0000FF;">Biru Tua</button>
+              <button onclick="changekanvasColor('#73b8e3')" style="background-color: #73b8e3;">Biru Muda</button>
+              <button onclick="changekanvasColor('#164516')" style="background-color: #164516;">Hijau Tua</button>
+              <button onclick="changekanvasColor('#9fe696')" style="background-color: #9fe696;">Hijau Muda</button>
+              <button onclick="changekanvasColor('#FFFF00')" style="background-color: #FFFF00;">Kuning</button>
+              <button onclick="changekanvasColor('#e0a955')" style="background-color: #e0a955;">Orange</button>
+              <button onclick="changekanvasColor('#800080')" style="background-color: #800080;">Ungu</button>
+              <button onclick="changekanvasColor('#715741')" style="background-color: #715741;">Coklat</button>
+              <button onclick="clearkanvas()">Hapus</button>
+            </div>
+            <button class="screenshot-btn" onclick="takekanvasScreenshot()">Simpan Gambar</button>
+          </div>
+      }
+
+
+          <!-- Chatbot -->
+  <div class="chatbot-container">
+    <div class="chatbot-window" id="chatbot-window">
+      <div class="chatbot-header">
+        <h3>Teman Bicara</h3>
+        <button onclick="toggleChatbot()"
+          style="background: none; border: none; color: white; font-size: 20px;">×</button>
+      </div>
+      <div class="chatbot-messages" id="chatbot-messages">
+        <div class="message bot-message">Halo! Saya di sini untuk mendengarkan. Bagaimana perasaanmu hari ini?</div>
+      </div>
+      <div class="chatbot-input">
+        <input type="text" id="chatbot-input" placeholder="Ketik pesanmu..." onkeypress="handleChatbotInput(event)">
+        <button onclick="sendChatbotMessage()">Kirim</button>
+      </div>
+    </div>
+    <button class="chatbot-toggle" onclick="toggleChatbot()">
+      <img src="chatbot-icon.png" alt="Chat" style="width: 30px; height: 30px;">
+    </button>
+  </div>
+        `
+      }
+    };
+
+    // halaman Functions
+    function showhalaman(halamanId) {
+      document.querySelectorAll('.halaman-button').forEach(button => {
+        button.classList.remove('active');
+      });
+      document.querySelector(`.halaman-button[onclick="showhalaman('${halamanId}')"]`).classList.add('active');
+      document.querySelectorAll('.halaman-content').forEach(content => {
+        content.classList.remove('active');
+      });
+      document.getElementById(`${halamanId}-halaman`).classList.add('active');
+      
+      // Clear any displayed info
+      document.getElementById('education-info').innerHTML = '';
+      document.getElementById('features-info').innerHTML = '';
+    }
+
+    // Info Display Functions
+    let currentInfoIndex = 0;
+    let currentContentPage = 0;
+    let currentFeature = null;
+
+    function showInfo(index) {
+      currentInfoIndex = index;
+      currentContentPage = 0;
+      
+      const topic = topics[index];
+      const infoContainer = document.getElementById('education-info');
+      
+      infoContainer.innerHTML = `
+        <h2>${topic.title}</h2>
+        <div class="info-content active">
+          ${topic.content[0]}
+        </div>
+        ${topic.content.length > 1 ? `
+        <div class="info-nav">
+          <button onclick="prevContentPage()" disabled>Sebelumnya</button>
+          <button onclick="nextContentPage()">Selanjutnya</button>
+        </div>
+        ` : ''}
+        ${topic.img ? `<img src="${topic.img}" alt="${topic.title}" style="max-width: 200px; margin-top: 20px;">` : ''}
+      `;
+      
+      infoContainer.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function prevContentPage() {
+      if (currentContentPage > 0) {
+        document.querySelectorAll('.info-content').forEach(content => {
+          content.classList.remove('active');
+        });
+        
+        currentContentPage--;
+        document.querySelectorAll('.info-content')[currentContentPage].classList.add('active');
+        
+        // nav buttons
+        const prevBtn = document.querySelector('.info-nav button:first-child');
+        const nextBtn = document.querySelector('.info-nav button:last-child');
+        
+        prevBtn.disabled = currentContentPage === 0;
+        nextBtn.disabled = false;
+      }
+    }
+
+    function nextContentPage() {
+      const topic = topics[currentInfoIndex];
+      
+      if (currentContentPage < topic.content.length - 1) {
+        document.querySelectorAll('.info-content').forEach(content => {
+          content.classList.remove('active');
+        });
+        
+        currentContentPage++;
+        const newContent = document.createElement('div');
+        newContent.className = 'info-content active';
+        newContent.innerHTML = topic.content[currentContentPage];
+        document.getElementById('education-info').insertBefore(newContent, document.querySelector('.info-nav'));
+
+        const prevBtn = document.querySelector('.info-nav button:first-child');
+        const nextBtn = document.querySelector('.info-nav button:last-child');
+        
+        prevBtn.disabled = false;
+        nextBtn.disabled = currentContentPage === topic.content.length - 1;
+      }
+    }
+
+    function toggleTestLinks() {
+      const additionalLinks = document.getElementById('additional-test-links');
+      const toggleBtn = document.getElementById('toggle-test-btn');
+      
+      if (additionalLinks.style.display === 'none') {
+        additionalLinks.style.display = 'block';
+        toggleBtn.textContent = 'Sembunyikan';
+      } else {
+        additionalLinks.style.display = 'none';
+        toggleBtn.textContent = 'Lihat Lainnya';
+      }
+    }
+
+    function showFeature(featureId) {
+      currentFeature = featureId;
+      const feature = features[featureId];
+      const featureContainer = document.getElementById('features-info');
+      
+      featureContainer.innerHTML = `
+        <h2>${feature.title}</h2>
+        <div class="feature-content active">
+          ${feature.content}
+        </div>
+      `;
+      
+      // Initialize specific feature 
+      if (featureId === 'moodtracker-tracker') {
+        initmoodtrackerTracker();
+      } else if (featureId === 'moodtracker-kanvas') {
+        initkanvas();
+      } else if (featureId === 'stress-release') {
+        initStressrelease();
+      } else if (featureId === 'quotes') {
+        initQuotes();
+      }
+      
+      featureContainer.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // moodtracker Tracker Functions
+    let selectedmoodtracker = null;
+    let selectedmoodtrackerText = '';
+    let moodtrackerHistory = JSON.parse(localStorage.getItem('moodtrackerHistory')) || [];
+
+    function initmoodtrackerTracker() {
+      updatemoodtrackerHistory();
+    }
+
+    function toggleHistory() {
+      const historyContainer = document.getElementById('moodtracker-history');
+      const toggleBtn = document.querySelector('.history-toggle');
+      
+      if (historyContainer.style.display === 'none') {
+        historyContainer.style.display = 'block';
+        toggleBtn.textContent = 'Sembunyikan Riwayat';
+      } else {
+        historyContainer.style.display = 'none';
+        toggleBtn.textContent = 'Lihat Riwayat';
+      }
+    }
+
+    function selectmoodtracker(moodtracker, moodtrackerText) {
+      selectedmoodtracker = moodtracker;
+      selectedmoodtrackerText = moodtrackerText;
+      
+      document.querySelectorAll('.moodtracker-option').forEach(option => {
+        option.classList.remove('selected');
+      });
+      
+      event.currentTarget.classList.add('selected');
+    }
+
+    function savemoodtracker() {
+      if (!selectedmoodtracker) {
+        alert('Silakan pilih suasana hati terlebih dahulu');
+        return;
+      }
+
+      const note = document.getElementById('moodtracker-note').value;
+      const date = new Date().toLocaleString();
+      
+      const moodtrackerEntry = {
+        moodtracker: selectedmoodtracker,
+        moodtrackerText: selectedmoodtrackerText,
+        note: note,
+        date: date
+      };
+      
+      moodtrackerHistory.unshift(moodtrackerEntry);
+      localStorage.setItem('moodtrackerHistory', JSON.stringify(moodtrackerHistory));
+      updatemoodtrackerHistory();
+      
+      selectedmoodtracker = null;
+      selectedmoodtrackerText = '';
+      document.getElementById('moodtracker-note').value = '';
+      document.querySelectorAll('.moodtracker-option').forEach(option => {
+        option.classList.remove('selected');
+      });
+      
+      alert('Suasana hati Anda telah disimpan. Terima kasih!');
+    }
+
+    function updatemoodtrackerHistory() {
+      const moodtrackerEntriesContainer = document.getElementById('moodtracker-entries');
+      moodtrackerEntriesContainer.innerHTML = '';
+      
+      if (moodtrackerHistory.length === 0) {
+        moodtrackerEntriesContainer.innerHTML = '<p>Belum ada riwayat suasana hati.</p>';
+        return;
+      }
+      
+      moodtrackerHistory.forEach(entry => {
+        const entryElement = document.createElement('div');
+        entryElement.className = 'moodtracker-entry';
+        entryElement.style.margin = '10px 0';
+        entryElement.style.padding = '10px';
+        entryElement.style.backgroundColor = '#f8f8ff';
+        entryElement.style.borderRadius = '8px';
+        
+        let emojiUrl;
+        switch(entry.moodtracker) {
+          case 'sangat-bahagia':
+            emojiUrl = 'me-removebg-preview.png';
+            break;
+          case 'bahagia':
+            emojiUrl = '4ffc1ae8-d829-46ff-9335-7b1171bc8a66-removebg-preview.png';
+            break;
+          case 'netral':
+            emojiUrl = '52c8d000-2b9c-4bca-8d78-3f2199e53644-removebg-preview.png';
+            break;
+          case 'sedih':
+            emojiUrl = 'Pink_Emoji_Reaction-removebg-preview.png';
+            break;
+          case 'sangat-sedih':
+            emojiUrl = '638daa54-cf09-4b59-84d9-c3105c7a7b3c-removebg-preview.png';
+            break;
+        }
+        
+        entryElement.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <img src="${emojiUrl}" alt="${entry.moodtrackerText}" style="width:30px;height:30px;">
+            <div>
+              <strong>${entry.moodtrackerText}</strong> - ${entry.date}
+              ${entry.note ? `<p style="margin: 5px 0 0;">${entry.note}</p>` : ''}
+            </div>
+          </div>
+        `;
+        
+        moodtrackerEntriesContainer.appendChild(entryElement);
+      });
+    }
+     // Chatbot
+    function toggleChatbot() {
+      const chatbotWindow = document.getElementById('chatbot-window');
+      chatbotWindow.style.display = chatbotWindow.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    function sendChatbotMessage() {
+      const input = document.getElementById('chatbot-input');
+      const message = input.value.trim();
+
+      if (message) {
+        // Add user message
+        addChatbotMessage(message, 'user-message');
+        input.value = '';
+
+        // Bot response
+        setTimeout(() => {
+          let response = getBotResponse(message);
+          addChatbotMessage(response, 'bot-message');
+        }, 500);
+      }
+    }
+     function handleChatbotInput(e) {
+      if (e.key === 'Enter') {
+        sendChatbotMessage();
+      }
+    }
+
+    function addChatbotMessage(text, className) {
+      const messagesContainer = document.getElementById('chatbot-messages');
+      const messageElement = document.createElement('div');
+      messageElement.className = `message ${className}`;
+      messageElement.textContent = text;
+      messagesContainer.appendChild(messageElement);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    function getBotResponse(message) {
+  const lowerMessage = message.toLowerCase().trim();
+  const positiveWords = ['senang', 'bahagia', 'baik', 'puas', 'hebat', 'mantap', 'awesome'];
+  const negativeWords = ['sedih', 'buruk', 'tidak baik', 'depresi', 'putus asa', 'kecewa', 'gagal'];
+  const anxietyWords = ['stres', 'cemas', 'khawatir', 'panik', 'overthinking', 'tekanan'];
+  const traumaWords = ['trauma', 'luka batin', 'pelecehan', 'kekerasan', 'bully', 'intimidasi'];
+  const lonelyWords = ['kesepian', 'sendiri', 'ditinggal', 'terisolasi', 'tidak punya teman'];
+  const selfHarmWords = ['bunuh diri', 'mati saja', 'ingin hilang', 'melukai diri', 'cutting', 'overdosis'];
+
+  // Deteksi intensi pengguna
+  const isPositive = positiveWords.some(word => lowerMessage.includes(word));
+  const isNegative = negativeWords.some(word => lowerMessage.includes(word));
+  const isAnxiety = anxietyWords.some(word => lowerMessage.includes(word));
+  const isTrauma = traumaWords.some(word => lowerMessage.includes(word));
+  const isLonely = lonelyWords.some(word => lowerMessage.includes(word));
+  const isSelfHarm = selfHarmWords.some(word => lowerMessage.includes(word));
+
+  // Respons berdasarkan intensi
+  if (/halo|hai|hi|helo|hey/i.test(lowerMessage)) {
+    return "Halo! Saya di sini untuk mendengarkan. Bagaimana perasaanmu hari ini?";
+  } 
+  else if (isPositive) {
+    return "Senang mendengarnya! 💖 Apakah ada pencapaian spesifik yang membuatmu merasa seperti itu?";
+  }
+  else if (isNegative) {
+    return "Aku benar-benar mendengar rasa sakitmu🫂. Maukah kamu berbagi lebih banyak tentang apa yang terjadi?";
+  }
+  else if (isAnxiety) {
+    return "Kecemasan bisa terasa seperti badai yang tak berujung🌪️.  Coba buka fitur menarik dan cobalah ikuti langkah langkah dalam pelepas stress";
+  }
+  else if (isTrauma) {
+    return "Pengalaman traumatis bisa meninggalkan bekas yang dalam. Kamu tidak sendirian. Apakah kamu sudah mencari bantuan profesional untuk ini?";
+  }
+  else if (isLonely) {
+    return "Kesepian itu berat, tapi aku di sini bersamamu. Mungkin kita bisa cari komunitas online yang sesuai minatmu? kamu juga bisa mencoba menghubungi layanan konsultasi gratis pada menu Edukasi Kesehatan Mental";
+  }
+  else if (isSelfHarm) {
+    return "🚨 Aku sangat khawatir dengan keselamatanmu. Tolong hubungi hotline darurat 119 atau 112. Kamu sangat berharga, dan bantuan profesional tersedia untukmu.";
+  }
+  else if (/terima kasih|makasih|thanks/i.test(lowerMessage)) {
+    return "Sama-sama! 💕 Ingat, kamu selalu punya tempat untuk berbicara di sini.";
+  }
+  else if (/bantuan|tolong|help/i.test(lowerMessage)) {
+    return "Aku siap mendukungmu. Kamu bisa mengikuti tes kesehatan mental atau konseling secara gratis pada fitur Edukasi Kesehatan Mental";
+  }
+  else {
+    const empatheticResponses = [
+      "Aku mendengar betapa sulitnya ini bagimu. 💫 Apa yang biasanya sedikit meringankan perasaan seperti ini?",
+      "Itu pasti sangat melelahkan.  Apakah ada orang terdekat yang tahu tentang perasaanmu ini?",
+      "Terima kasih sudah berbagi. Langkah kecil pun tetap berarti. 🌱 Apakah ada satu hal kecil yang bisa kamu lakukan hari ini untuk merawat diri?",
+      "Aku di sini bersamamu. 🌟 Kalau mau, kita bisa eksplor sumber daya atau teknik relaksasi bersama."
+    ];
+    return empatheticResponses[Math.floor(Math.random() * empatheticResponses.length)];
+  }
+}
+
+    // Quotes Functions
+    const quotes = [
+      {
+        text: "Kesehatan mental bukan tujuan, tapi sebuah proses. Ini tentang bagaimana Anda mengemudi, bukan ke mana Anda pergi.",
+        author: "Noam Shpancer"
+      },
+      {
+        text: "Tak masalah menjadi tak sempurna. Sebab tugas kita hanyalah melakukan yang terbaik.",
+        author: "Nyala Kebaikan"
+      },
+      {
+        text: "Salah satu bagian dari kegembiraan itu adalah apa yang anda ciptakan, apa yang anda yakini, dan apa yang anda terima.",
+        author: "Nyala Kebaikan"
+      },
+      {
+        text: "Masalah bukanlah tanda bahwa Anda gagal. Mereka adalah tanda bahwa Anda mencoba.",
+        author: "Sophia Amoruso"
+      },
+      {
+        text: "Proses tidak hanya untuk hasil. Proses justru membantu anda dalam mengatasi keadaan yang buruk.",
+        author: "Nyala Kebaikan"
+      },
+      {
+        text: "Bagaimanapun keadaan kita, mau sedih, bahagia, waktu tidak pernah berhenti menunggu. Waktu tetep berjalan",
+        author: "Tere Liye"
+      },
+      {
+        text: "Ingatlah selalu bahwa masa depan itu datang pada hari esok.",
+        author: "Dean Acheson"
+      },
+      {
+        text: "Jangan pernah membiarkan hari yang sudah lalu menyita harimu.",
+        author: "Richard H. Nelso"
+      },
+      {
+        text: "Kesedihan pun akan terbang menjauh seiring dengan kepakan sayap waktu.",
+        author: "Jean de La Fontaine"
+      },
+      {
+        text: "Kita semua hidup dalam ketegangan, dari waktu ke waktu serta dari hari ke hari. Dengan kata lain, kita adalah pahlawan dari cerita kita sendiri.",
+        author: "Mary Mc Carthy"
+      },
+      {
+        text: "Waktu adalah keadilan yang menguji mereka yang bersalah.",
+        author: "Marcia Wieder"
+      },
+      {
+        text: "Pernah menghadapi gelap dalam hidup? Aku pernah. Takut? tentu. Lalu harus bagaimana? BERLATIH BERANI.",
+        author: "Nurul Hidayati"
+      },
+      {
+        text: "Jangan menutup mata! karena yang kamu lihat justru imajinasi dan angan diri!",
+        author: "Nurul Hidayati"
+      },
+      {
+        text: "Memeluk diri sendiri, menerima kesedihan. Segala hal yang lancang menghancurkan hati kita persilahkan pergi dan janggan biarkan kembali lagi.",
+        author: "Alfi Alghazi"
+      },
+      {
+        text: "Mesti pahit, nikmatilah. Meski berat, ikhlaskanlah. Sebab kita tak akan pernah tahu takdir yang hari ini kita anggap sebagai air mata ternyata kelak menjadi syukur yang paling bahagia.",
+        author: "Alfi Alghazi"
+      },
+       {
+        text: "Beberapa hal dalam hidup memang harus dilepaskan. Kita tidak pernah bisa memiliki segalanya. Selalu ada yang tidak bisa kita jangkau, tak pernah sampai pada kita, meski sudah mengirim banyak doa untuknya. Itulah jalan hidup.",
+        author: "Boy Candra"
+      },
+       {
+        text: "Pada akhirnya, memang akan banyak hal yang terjadi diluar kendali kita. Satu dua hal kita redam dengan diam, sisanya kita biarkan tangisan yang menuntaskan.",
+        author: "Alfi Alghazi"
+      },
+    ];
+
+    function initQuotes() {
+      getNewQuote();
+    }
+
+    function getNewQuote() {
+      const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+      document.getElementById('current-quote').textContent = `"${randomQuote.text}"`;
+      document.getElementById('quote-author').textContent = `- ${randomQuote.author}`;
+    }
+
+    // Stress release Functions
+    let currentStep = 1;
+    const totalSteps = 5;
+
+    function initStressrelease() {
+      currentStep = 1;
+      document.querySelectorAll('.stress-step').forEach(step => {
+        step.classList.remove('active');
+      });
+      document.getElementById('step1').classList.add('active');
+      updateStepButtons();
+    }
+
+    function nextStep() {
+      if (currentStep < totalSteps) {
+        document.getElementById(`step${currentStep}`).classList.remove('active');
+        currentStep++;
+        document.getElementById(`step${currentStep}`).classList.add('active');
+        updateStepButtons();
+      }
+    }
+
+    function prevStep() {
+      if (currentStep > 1) {
+        document.getElementById(`step${currentStep}`).classList.remove('active');
+        currentStep--;
+        document.getElementById(`step${currentStep}`).classList.add('active');
+        updateStepButtons();
+      }
+    }
+
+    function updateStepButtons() {
+      document.getElementById('prev-btn').disabled = currentStep === 1;
+      document.getElementById('next-btn').disabled = currentStep === totalSteps;
+      if (currentStep === totalSteps) {
+        document.getElementById('next-btn').textContent = 'Selesai';
+      } else {
+        document.getElementById('next-btn').textContent = 'Selanjutnya';
+      }
+    }
+
+    // moodtracker kanvas Functions
+    let isDrawing = false;
+    let currentColor = '#000000';
+    let kanvasCtx = null;
+
+    function initkanvas() {
+      const kanvas = document.getElementById('moodtracker-kanvas');
+      kanvasCtx = kanvas.getContext('2d');
+      
+      // Clear and prepare the kanvas canvas
+      kanvasCtx.fillStyle = 'rgba(255, 255, 255, 0)'; // Transparent
+      kanvasCtx.fillRect(0, 0, kanvas.width, kanvas.height);
+      kanvasCtx.strokeStyle = currentColor;
+      kanvasCtx.lineWidth = 10;
+      kanvasCtx.lineCap = 'round';
+
+      kanvas.addEventListener('mousedown', startDrawingInkanvas);
+      kanvas.addEventListener('mousemove', drawInkanvas);
+      kanvas.addEventListener('mouseup', stopDrawingInkanvas);
+      kanvas.addEventListener('mouseout', stopDrawingInkanvas);
+    }
+
+    function startDrawingInkanvas(e) {
+      isDrawing = true;
+      drawInkanvas(e);
+    }
+
+    function drawInkanvas(e) {
+      if (!isDrawing) return;
+      
+      const kanvas = document.getElementById('moodtracker-kanvas');
+      const rect = kanvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      kanvasCtx.lineTo(x, y);
+      kanvasCtx.stroke();
+      kanvasCtx.beginPath();
+      kanvasCtx.moveTo(x, y);
+    }
+
+    function stopDrawingInkanvas() {
+      isDrawing = false;
+      kanvasCtx.beginPath();
+    }
+
+    function changekanvasColor(color) {
+      currentColor = color;
+      kanvasCtx.strokeStyle = currentColor;
+    }
+
+    function clearkanvas() {
+      const kanvas = document.getElementById('moodtracker-kanvas');
+      kanvasCtx.clearRect(0, 0, kanvas.width, kanvas.height);
+    }
+
+    function takekanvasScreenshot() {
+      const kanvas = document.getElementById('moodtracker-kanvas');
+      
+      // Create a temporary canvas to draw everything
+      const tempCanvas = document.createElement('canvas');
+      tempCanvas.width = kanvas.width;
+      tempCanvas.height = kanvas.height;
+      const tempCtx = tempCanvas.getContext('2d');
+      
+      // Fill with white background
+      tempCtx.fillStyle = '#FFFFFF';
+      tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+      
+      // Draw the kanvas contents
+      tempCtx.drawImage(kanvas, 0, 0);
+      
+      // Convert to image and download
+      const image = tempCanvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
+      const link = document.createElement('a');
+      link.download = 'moodtracker-kanvas-' + new Date().toISOString().slice(0, 10) + '.png';
+      link.href = image;
+      link.click();
+    }
+    card.appendChild(delBtn);
+
+    container.appendChild(card);
+
+document.addEventListener("click", () => {
+  tampilkanMenfes();
+});
+    document.addEventListener('DOMContentLoaded', function() {
+    });
+  </script>
+</body>
+</html> 
